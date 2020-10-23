@@ -1,0 +1,25 @@
+version: "3"
+services:
+
+  hub:
+    image: selenium/hub
+    ports:
+      - "4444:4444"
+
+    environment:
+      GRID_MAX_SESSION: 101 # It will not allow that specific node to open, browser more than value of "maxSession"
+      GRID_BROWSER_TIMEOUT: 3000 #which gives hub 60 seconds to return the response to the test, once a command is sent to be executed. If we don't define this, tests would crash every time when a response from the hub is not immediate.
+      GRID_TIMEOUT: 90000
+
+  firefox:
+    image: selenium/node-firefox
+    container_name: web-automation_firefox
+    depends_on:
+      - hub
+    environment:
+      NODE_MAX_SESSION: 100 # Max parallelization of 100
+      NODE_MAX_INSTANCES: 1 # Run 100 instances of chrome/firefox
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "9002:5900"
