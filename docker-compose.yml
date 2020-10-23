@@ -17,9 +17,13 @@ services:
     depends_on:
       - hub
     environment:
+      HUB_PORT_4444_TCP_ADDR: hub
+      HUB_PORT_4444_TCP_PORT: 4444
       NODE_MAX_SESSION: 100 # Max parallelization of 100
       NODE_MAX_INSTANCES: 1 # Run 100 instances of chrome/firefox
     volumes:
       - /dev/shm:/dev/shm
     ports:
       - "9002:5900"
+    links: 
+      - hub
